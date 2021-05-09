@@ -1,41 +1,31 @@
+using event_receiver_app.Hubs;
 using event_receiver_app.Models;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace event_receiver_app.Services
 {
     public class EventService
     {
-        private List<CprEvent> cprEvents;
+        private List<CprEventListViewModel> cprEvents = new List<CprEventListViewModel>();
+        private readonly IHubContext<CprEventsHub> hubContext;
 
-        public EventService()
+        public EventService(IHubContext<CprEventsHub> hubContext)
         {
-            var startDate = DateTime.Now;
-            var rng = new Random();
-            cprEvents = Enumerable.Range(1, 5).Select(index => new CprEvent
-            {
-                Date = startDate.AddDays(index),
-                TemperatureC = rng.Next(-20, 55),
-                Summary = Summaries[rng.Next(Summaries.Length)]
-            }).ToList();
+            this.hubContext = hubContext;
         }
 
-        private static readonly string[] Summaries = new[]
+        public Task<CprEventListViewModel[]> GetEventstAsync()
         {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
-
-        public Task<CprEvent[]> GetEventstAsync()
-        {
-            var rng = new Random();
             return Task.FromResult(cprEvents.ToArray());
         }
 
-        public void AddEvent(CprEvent cprEvent)
+        public async Task AddEventAsync(CprEvent cprEvent)
         {
-            cprEvents.Add(cprEvent);
+            cprEvents.Add(new CprEventListViewModel { Time = DateTime.Now, CprEvent = cprEvent });
+            await this.hubContext.Clients.All.SendAsync("RefreshData");
         }
     }
 }

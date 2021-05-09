@@ -4,12 +4,14 @@ namespace event_receiver_app.Models
 {
     public class CprEvent
     {
-        public DateTime Date { get; set; }
+        public string ReferenceNumber { get; set; }
 
-        public int TemperatureC { get; set; }
+        public string MessageId { get; set; }
 
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public string MessageType { get; set; }
 
-        public string Summary { get; set; }
+        public PersonData PersonData { get; set; }
+
+        public Address Address { get; set; }
     }
 }
