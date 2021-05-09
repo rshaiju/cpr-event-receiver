@@ -1,6 +1,6 @@
 using System;
 
-namespace event_receiver_app.Data
+namespace event_receiver_app.Models
 {
     public class CprEvent
     {

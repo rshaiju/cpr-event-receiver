@@ -1,4 +1,4 @@
-using event_receiver_app.Data;
+using event_receiver_app.Services;
 using event_receiver_app.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;

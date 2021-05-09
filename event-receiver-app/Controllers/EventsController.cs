@@ -1,5 +1,6 @@
-﻿using event_receiver_app.Data;
-using event_receiver_app.Hubs;
+﻿using event_receiver_app.Hubs;
+using event_receiver_app.Models;
+using event_receiver_app.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;

@@ -1,9 +1,10 @@
+using event_receiver_app.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace event_receiver_app.Data
+namespace event_receiver_app.Services
 {
     public class EventService
     {

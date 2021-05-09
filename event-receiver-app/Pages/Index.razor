@@ -1,11 +1,14 @@
 ﻿@page "/"
-@using event_receiver_app.Data
-@inject EventService eventService
+@using event_receiver_app.Services
+@using event_receiver_app.Models
 @using Microsoft.Extensions.Configuration
-@inject IConfiguration configuration
 @using Microsoft.AspNetCore.SignalR.Client
-@inject NavigationManager NavigationManager
+
 @implements IAsyncDisposable
+
+@inject EventService eventService
+@inject IConfiguration configuration
+@inject NavigationManager NavigationManager
 
 <h1>Events</h1>
 
@@ -50,7 +53,8 @@ else
             .WithUrl(NavigationManager.ToAbsoluteUri("/cpr-events-hub"))
             .Build();
 
-        hubConnection.On("RefreshData",async ()=> {
+        hubConnection.On("RefreshData", async () =>
+        {
             cprEvents = await eventService.GetEventstAsync();
             StateHasChanged();
         });
