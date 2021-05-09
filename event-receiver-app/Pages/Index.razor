@@ -1,0 +1,67 @@
+﻿@page "/"
+@using event_receiver_app.Data
+@inject EventService eventService
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration configuration
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager NavigationManager
+@implements IAsyncDisposable
+
+<h1>Events</h1>
+
+<p>List of CPR events posted to <strong>@configuration["SiteName"]</strong>.</p>
+
+@if (cprEvents == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var cprEvent in cprEvents)
+            {
+                <tr>
+                    <td>@cprEvent.Date.ToShortDateString()</td>
+                    <td>@cprEvent.TemperatureC</td>
+                    <td>@cprEvent.TemperatureF</td>
+                    <td>@cprEvent.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private HubConnection hubConnection;
+    private CprEvent[] cprEvents;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+            .WithUrl(NavigationManager.ToAbsoluteUri("/cpr-events-hub"))
+            .Build();
+
+        hubConnection.On("RefreshData",async ()=> {
+            cprEvents = await eventService.GetEventstAsync();
+            StateHasChanged();
+        });
+
+        cprEvents = await eventService.GetEventstAsync();
+
+        await hubConnection.StartAsync();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await hubConnection.DisposeAsync();
+    }
+}
