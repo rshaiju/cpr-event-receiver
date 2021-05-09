@@ -24,7 +24,7 @@ namespace event_receiver_app.Services
 
         public async Task AddEventAsync(CprEvent cprEvent)
         {
-            cprEvents.Add(new CprEventListViewModel { Time = DateTime.Now, CprEvent = cprEvent });
+            cprEvents.Add(new CprEventListViewModel {Time = DateTime.Now, CprEvent = cprEvent });
             await this.hubContext.Clients.All.SendAsync("RefreshData");
         }
     }

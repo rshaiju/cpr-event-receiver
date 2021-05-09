@@ -8,6 +8,8 @@ namespace event_receiver_app.Models
 {
     public class CprEventListViewModel
     {
+        public Guid Id { get; } = Guid.NewGuid();
+
         public DateTime Time { get; set; }
 
         public CprEvent CprEvent { get; set; }

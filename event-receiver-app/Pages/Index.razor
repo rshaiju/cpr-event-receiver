@@ -3,6 +3,7 @@
 @using event_receiver_app.Models
 @using Microsoft.Extensions.Configuration
 @using Microsoft.AspNetCore.SignalR.Client
+@using Newtonsoft.Json;
 
 @implements IAsyncDisposable
 
@@ -26,6 +27,7 @@ else
                 <th>Time</th>
                 <th>CPR Number</th>
                 <th>Event Type</th>
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -35,6 +37,15 @@ else
                     <td>@cprEvent.Time</td>
                     <td>@cprEvent.CprEvent.ReferenceNumber</td>
                     <td>@cprEvent.CprEvent.MessageType</td>
+                    <td>
+                        <button data-toggle="collapse" data-target="#json@(cprEvent.Id)">Json</button>
+
+                        <div id="json@(cprEvent.Id)" class="collapse">
+                            <pre>
+                                @cprEvent.Json
+                            </pre>
+                        </div>
+                    </td>
                 </tr>
             }
         </tbody>
