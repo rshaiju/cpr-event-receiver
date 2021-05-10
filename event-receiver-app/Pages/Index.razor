@@ -13,7 +13,7 @@
 
 <h1>Events</h1>
 
-<p>List of CPR events posted to <strong>@configuration["SiteName"]</strong>.</p>
+<p>List of CPR events posted to <strong>@(configuration["TenantName"]??"Event Receiver")</strong>.</p>
 
 @if (cprEvents == null)
 {
