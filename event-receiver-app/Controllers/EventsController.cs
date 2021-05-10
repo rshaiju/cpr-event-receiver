@@ -28,6 +28,10 @@ namespace event_receiver_app.Controllers
         [HttpPost]
         public async Task<IActionResult> PostEvent([FromBody]CprEvent cprEvent)
         {
+            if(this.eventService.RejectEventsMode)
+            {
+                return Problem("Event receiver is in reject mode. Flip the switch to accept events");
+            }
             await this.eventService.AddEventAsync(cprEvent);
 
             return Ok();

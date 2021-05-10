@@ -12,6 +12,8 @@ namespace event_receiver_app.Services
         private List<CprEventListViewModel> cprEvents = new List<CprEventListViewModel>();
         private readonly IHubContext<CprEventsHub> hubContext;
 
+        public bool RejectEventsMode { get; set; } = false;
+
         public EventService(IHubContext<CprEventsHub> hubContext)
         {
             this.hubContext = hubContext;
@@ -27,5 +29,6 @@ namespace event_receiver_app.Services
             cprEvents.Add(new CprEventListViewModel {Time = DateTime.Now, CprEvent = cprEvent });
             await this.hubContext.Clients.All.SendAsync("RefreshData");
         }
+
     }
 }
