@@ -50,6 +50,9 @@ else
             }
         </tbody>
     </table>
+    <div>
+        <button class="btn btn-danger" @onclick="ClearEvents">Clear All</button>
+    </div>
 }
 
 @code {
@@ -76,5 +79,12 @@ else
     public async ValueTask DisposeAsync()
     {
         await hubConnection.DisposeAsync();
+    }
+
+    private async Task ClearEvents()
+    {
+        eventService.ClearEvents();
+        cprEvents = await eventService.GetEventstAsync();
+        StateHasChanged();
     }
 }

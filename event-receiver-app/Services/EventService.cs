@@ -30,5 +30,10 @@ namespace event_receiver_app.Services
             await this.hubContext.Clients.All.SendAsync("RefreshData");
         }
 
+        public void ClearEvents()
+        {
+            cprEvents.Clear();
+        }
+
     }
 }
